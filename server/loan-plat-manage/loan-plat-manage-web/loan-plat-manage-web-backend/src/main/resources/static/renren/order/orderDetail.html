@@ -1,0 +1,161 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1, user-scalable=no"/>
+<title>订单详情</title>
+<link href="../bootstrap-3.3.5-dist/css/bootstrap.min.css" title="" rel="stylesheet" />
+<link title="" href="../css/style.css" rel="stylesheet" type="text/css"  />
+<link title="blue" href="../css/dermadefault.css" rel="stylesheet" type="text/css"/>
+<link title="green" href="../css/dermagreen.css" rel="stylesheet" type="text/css" disabled="disabled"/>
+<link title="orange" href="../css/dermaorange.css" rel="stylesheet" type="text/css" disabled="disabled"/>
+<link href="../css/templatecss.css" rel="stylesheet" title="" type="text/css" />
+<script src="../script/jquery-1.11.1.min.js" type="text/javascript"></script>
+<script src="../script/jquery.cookie.js" type="text/javascript"></script>
+<script src="../script/pingxun.js" type="text/javascript"></script>
+<script src="../script/ajaxfileupload.js" type="text/javascript"></script>
+<script src="../bootstrap-3.3.5-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<link title="blue" href="../script/jquery.mloading.css" rel="stylesheet" type="text/css"/>
+<script src="../script/jquery.mloading.js" type="text/javascript"></script>
+<script src="../script/layer.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div id="navtop"></div>
+<div class="down-main">
+    <div  class="left-main left-full" include="left" id="left"></div>
+  <div class="right-product view-product right-full">
+     <div class="container-fluid">
+				<div class="manage account-manage info-center">
+					<div class="page-header">
+                        <div class="pull-left">
+						    <h4>订单信息</h4>
+					    </div>
+                    </div>
+                    <dl class="account-basic clearfix">
+                        <dd class="pull-left margin-large-left margin-small-top">
+                        <p class="text-small">
+                            <span class="show pull-left base-name">订单名称</span>
+                            <span class="margin-left"><span id="feeItem"></span></span>
+                        </p>
+                        <p class="text-small">
+                            <span class="show pull-left base-name">活动价(元)</span>
+                            <span class="margin-left"><span id="activePrice"></span></span>
+                        </p>
+                        <p class="text-small">
+                            <span class="show pull-left base-name">到期时间</span>
+                            <span class="margin-left"><span id="effDate"></span></span>
+                        </p>
+                        </dd>
+                        <dd class="pull-left margin-large-left margin-small-top">
+                            <p class="text-small">
+                                <span class="show pull-left base-name">订单号</span>
+                                <span class="margin-left"><span id="payNo"></span></span>
+                            </p>
+                            <p class="text-small">
+                                <span class="show pull-left base-name">付款金额(元)</span>
+                                <span class="margin-left"><span id="payFee"></span></span>
+                            </p>
+                        </dd>
+                        <dd class="pull-left margin-large-left margin-small-top">
+                            <p class="text-small">
+                                <span class="show pull-left base-name">费用编码</span>
+                                <span class="margin-left"><span id="feeCode"></span></span>
+                            </p>
+                            <p class="text-small">
+                                <span class="show pull-left base-name">支付方式</span>
+                                <span class="margin-left"><span id="payType"></span></span>
+                            </p>
+                        </dd>
+                        <dd class="pull-left margin-large-left margin-small-top">
+                            <p class="text-small">
+                                <span class="show pull-left base-name">原价(元)</span>
+                                <span class="margin-left"><span id="oldPrice"></span></span>
+                            </p>
+                            <p class="text-small">
+                                <span class="show pull-left base-name">支付状态</span>
+                                <span class="margin-left"><span id="isPay"></span></span>
+                            </p>
+                        </dd>
+                    </dl>
+				</div>
+         <div class="manage account-manage info-center">
+             <div class="page-header">
+                 <div class="pull-left">
+                     <h4>付款信息</h4>
+                 </div>
+             </div>
+             <dl class="account-basic clearfix">
+                 <dd class="pull-left margin-large-left margin-small-top">
+                     <p class="text-small">
+                         <span class="show pull-left base-name">付款人</span>
+                         <span class="margin-left"><span id="name"></span></span>
+                     </p>
+                     <p class="text-small">
+                         <span class="show pull-left base-name">电话</span>
+                         <span class="margin-left"><span id="phone"></span></span>
+                     </p>
+                 </dd>
+                 <dd class="pull-left margin-large-left margin-small-top">
+                     <p class="text-small">
+                         <span class="show pull-left base-name">地区</span>
+                         <span class="margin-left"><span id="areaName"></span></span>
+                     </p>
+                     <p class="text-small">
+                         <span class="show pull-left base-name">银行卡号</span>
+                         <span class="margin-left"><span id="accountNo"></span></span>
+                     </p>
+                 </dd>
+                 <dd class="pull-left margin-large-left margin-small-top">
+                     <p class="text-small">
+                         <span class="show pull-left base-name">身份证</span>
+                         <span class="margin-left"><span id="idCard"></span></span>
+                     </p>
+                 </dd>
+             </dl>
+             <dd class="pull-left margin-large-left margin-small-top">
+                 <p class="text-small">
+                     <input type="button" value="返回" style="width: 150px;" onclick="javascript:history.go(-1)"/>
+                 </p>
+             </dd>
+         </div>
+		</div>
+  </div>
+</div>
+<script>
+function findByData() {
+    var hrefUrl = window.location.href;
+    var id=getArgsFromHref(hrefUrl,"id");
+    var param ="id="+id;
+    var result = get(orderFindByIdUrl,param);
+    if(result.success){
+        $("#feeItem").text(result.data.feeItem);
+        $("#payNo").text(result.data.payNo);
+        $("#payFee").text(result.data.payFee);
+        $("#payType").text(result.data.payType=='alipay'?"支付宝":"微信");
+        $("#isPay").text(result.data.isPay?"支付成功":"未支付");
+        $("#oldPrice").text(result.data.oldPrice);
+        $("#activePrice").text(result.data.activePrice);
+        $("#effDate").text(result.data.effDate);
+        $("#name").text(result.data.name);
+        $("#accountNo").text(result.data.accountNo);
+        $("#phone").text(result.data.phone);
+        $("#feeCode").text(result.data.feeCode);
+        $("#idCard").text(result.data.idCard);
+        $("#areaName").text(result.data.areaName);
+    }else{
+        showTipMessage(result.message,true);
+    }
+}
+$(function(){
+    $("#navtop").load("../top.html",function () {
+        topFunc();
+    });
+    $("#left").load("../left.html",function(){
+        left();
+    });
+    findByData();
+});
+</script>
+</body>
+</html>

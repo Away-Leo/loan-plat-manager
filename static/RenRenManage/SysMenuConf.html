@@ -1,0 +1,325 @@
+<div class="pageheader">
+
+
+    <h2><i class="fa fa-tachometer"></i> 菜单管理
+        <span></span>
+    </h2>
+    <div class="breadcrumbs">
+        <ol class="breadcrumb">
+            <li>当前位置</li>
+            <li><a href="index.html">菜单</a></li>
+            <li class="active">菜单管理</li>
+        </ol>
+    </div>
+
+
+</div>
+
+
+<section class="tile color transparent-black">
+    <!-- tile header -->
+    <div class="tile-header">
+        <h1><strong></strong></h1>
+        <div class="controls">
+            <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
+            <a href="#" class="remove"><i class="fa fa-times"></i></a>
+        </div>
+    </div>
+    <!-- /tile header -->
+
+    <div class="form-horizontal">
+
+        <div class="row">
+            <form id="searchForm" >
+                <div class="form-group col-md-4">
+                    <label class="col-sm-4 control-label" for="menuNameSearch">菜单名称</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="menuNameSearch" name="menuName" placeholder="输入菜单名称">
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-sm-4 control-label" for="menuUrlSearch">菜单链接地址</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id="menuUrlSearch" name="menuUrl" placeholder="输入菜单链接地址">
+                    </div>
+                </div>
+                <!--<div class="form-group col-md-4">
+                    <label for="input07" class="col-sm-4 control-label">Normal select box *</label>
+                    <div class="col-sm-8" id="selectbox5">
+                        <select class="chosen-select chosen-transparent form-control" id="input09"
+                                parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+                            <option value="">Please choose</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                </div>-->
+                <div class="form-group col-md-4">
+                    <label class="col-sm-4 control-label">
+                    </label>
+                    <div class="col-sm-8">
+                        <button type="button" id="searchBtn" class="btn btn-primary">查询</button>
+                        <button type="button" id="resetBtn" class="btn btn-danger margin-left-15">重置</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+
+    <div class="tile-body nopadding">
+        <a id="addMenuBtn" role="button" class="btn btn-success margin-15">添加菜单</a>
+        <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+             aria-labelledby="modalConfirmLabel" aria-hidden="true">
+            <div class="modal-dialog" style="width: 60%">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"
+                                aria-hidden="true">关闭
+                        </button>
+                        <h3 class="modal-title" id="modalConfirmLabel"><strong>新增菜单</strong></h3>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-horizontal" role="form" parsley-validate id="basicvalidations">
+                            <input id="id" type="hidden" name="id" />
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="menuName" class="col-sm-4 control-label">菜单名称 *</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="menuName" name="menuName"
+                                               parsley-trigger="change" parsley-required="true"
+                                               parsley-minlength="1" parsley-validation-minlength="1">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="menuUrl" class="col-sm-4 control-label">菜单地址</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control" id="menuUrl" name="menuUrl"
+                                               parsley-trigger="change" parsley-minlength="4"
+                                               parsley-validation-minlength="1">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="allMenu" class="col-sm-4 control-label">所属上级菜单</label>
+                                    <input type="hidden" name="menuPid" id="menuPid" />
+                                    <input type="hidden" name="menuPidName" id="menuPidName" />
+                                    <div class="col-sm-8">
+                                        <div id="allMenu" style="height: 400px;overflow-y: scroll"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group form-footer">
+                                <div class="custom-labels">
+                                    <button type="button" id="submitBtn" class="btn btn-primary">提交</button>
+                                    <button type="button" id="emptyBtn" class="btn btn-default">清空</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div>
+        <!--<button type="button" class="btn btn-primary margin-15">Primary</button>-->
+        <table id="table" class="table table-bordered table-sortable">
+        </table>
+
+    </div>
+    <!-- /tile body -->
+
+</section>
+<script type="text/javascript">
+    var userManage = {
+        getQueryCondition: function (data) {
+            var param = {};//menuNameSearch menuUrlSearch
+            param.menuName = $("#menuNameSearch").val();//查询条件
+            param.menuUrl = $("#menuUrlSearch").val();//查询条件
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            return param;
+        }
+    };
+    $(function () {
+        /*chosen.jquery.min.js配置*/
+        $(".chosen-select").chosen({
+            disable_search_threshold: 10,
+            disable_search: false,
+            allow_single_deselect: true,
+            max_selected_options: 1
+        });
+
+        /*添加按钮点击事件*/
+        $("#addMenuBtn").click(function () {
+            $("#id").val();
+            $("#menuName").val();
+            $("#menuUrl").val();
+            $("#menuPid").val();
+            $("#modalConfirm").modal();
+            loadTree();
+        });
+
+        var $table = $("#table").dataTable($.extend(true, {}, CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
+            ajax: function (data, callback, settings) {
+                //封装请求参数
+                var param = userManage.getQueryCondition(data);
+                $.ajax({
+                    type: getSysMenuList.type,
+                    url: getSysMenuList.url,
+                    cache: false,  //禁用缓存
+                    data: param,    //传入已封装的参数
+                    dataType: "json",
+                    success: function (result) {
+                        //异常判断与处理
+                        if (!result.success) {
+                            PXF.errorDialog(result.message);
+                            return;
+                        }
+                        //封装返回数据
+                        var returnData = {};
+                        returnData.draw = result.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                        returnData.recordsTotal = result.data.totalElements;//总记录数
+                        returnData.recordsFiltered = result.data.totalElements;//后台不实现过滤功能，每次查询均视作全部结果
+                        returnData.data = result.data.content;
+                        //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                        callback(returnData);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        PXF.errorDialog("查询失败");
+                    }
+                });
+            },
+            order: [[ 2, "desc" ]],
+            //绑定数据
+            columns: [
+                {
+                    targets:0,
+                    title: "菜单名称",
+                    data: "menuName"
+                },
+                {
+                    targets:1,
+                    title: "菜单地址",
+                    data: "menuUrl"//字段名
+                },
+                {
+                    targets:2,
+                    title: "父菜单名称",
+                    data: "menuPidName"//字段名
+                },
+                {
+                    targets:3,
+                    title: "添加时间",
+                    data: "rawAddTime",
+                    orderable: true//排序
+                },
+                {
+                    targets:4,
+                    title: "操作",
+                    data:null,
+                    orderable: false,
+                    render : function(data,type, row, meta) {
+                        return "<a class='edit' style='cursor: pointer'>编辑</a><a class='delete' style='cursor: pointer'>删除</a>";
+                    }
+                }
+            ],
+            createdRow: function ( row, data, index ) {
+                $('td', row).each(function (e) {
+                    $(this).attr("class","text-center");
+                });
+                $('td', row).eq(4).attr("class","actions text-center");
+            },
+            drawCallback: function (settings) {
+                //渲染完毕后的回调
+                //默认选中第一行
+                // $("tbody tr",$table).eq(0).click();
+            }
+        })).api();//此处需调用api()方法,否则返回的是JQuery对象而不是DataTables的API对象
+        $(document).on("click", "#table a.edit", function (e) {
+            var nRow = $(this).parents('tr')[0];
+            editRow($table, nRow);
+        });
+
+        $(document).on("click", "#table a.delete", function (e) {
+            var nRow = $(this).parents('tr')[0];
+            deleteRow($table, nRow);
+        });
+
+        //删除
+        function deleteRow(table, nRow) {
+            PXF.confirmDialog("确认删除？",function () {
+                PXF.ajax(deleteSysMenuList,{id:table.row( nRow ).data().id},function () {
+                    $table.ajax.reload();
+                },function () {})
+            })
+        }
+        //编辑
+        function editRow(table, nRow) {
+            var aData=table.row( nRow ).data();
+            $("#modalConfirm").modal();
+            $("#id").val(aData.id);
+            $("#menuName").val(aData.menuName);
+            $("#menuUrl").val(aData.menuUrl);
+            $("#menuPid").val(aData.menuPid);
+
+            var tree=loadTree(function(data){
+                data.treeview('expandAll', {silent: true });
+                var nodeId=data.treeview('getNodeByUniqueTags', aData.menuPid).nodeId;
+                data.treeview('selectNode', [nodeId, { silent: true }  ]);
+                debugger;
+                $("#menuPidName").val(data.treeview('getNodeByUniqueTags', aData.menuPid).text);
+                // data.checkNode(aData.menuPid, { silent: true } );
+            });
+
+        }
+        //查询
+        $("#btn_search").click(function () {
+            $table.ajax.reload();
+        });
+
+
+        //加载树
+        function loadTree(initialize) {
+            /*第一个参数为pingxun-renren.js里面的url,第二个参数为需要加载树形结构的目标标签，第三个参数为bootstrap-treeview.js的配置参数*/
+            var tree=PXF.tree(getMenu,$('#allMenu'),{
+                onNodeSelected:function(event, data) {
+                    $("#menuPid").val(data.id);
+                    $("#menuPidName").val(data.menuName);
+                }
+            },initialize);
+            return tree;
+        }
+        //searchBtn resetBtn
+        $("#searchBtn").click(function () {
+            $table.ajax.reload();
+        });
+
+        $("#emptyBtn").click(function () {
+            $('#allMenu').treeview('uncheckAll', { silent: true });
+            $("#menuName").val("");
+            $("#menuUrl").val("");
+            $("#menuPid").val("");
+        });
+        $("#submitBtn").click(function () {
+            var isValidate=$("#basicvalidations").parsley().validate();
+            if(isValidate){
+                PXF.ajax(editSysMenuList,$("#basicvalidations"),function (data) {
+                    $table.ajax.reload();//表格重载
+                    $("#modalConfirm").modal('hide');
+                    $("#menuName").val("");
+                    $("#menuUrl").val("");
+                    $("#menuPid").val("");
+                },function () {})
+            }
+        });
+    });
+</script>
+
+      

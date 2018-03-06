@@ -1,0 +1,388 @@
+<div class="pageheader">
+
+
+    <h2><i class="fa fa-tachometer"></i> 用户菜单权限配置
+        <span></span>
+    </h2>
+    <div class="breadcrumbs">
+        <ol class="breadcrumb">
+            <li>当前位置</li>
+            <li>菜单</li>
+            <li>用户菜单权限配置</li>
+        </ol>
+    </div>
+
+
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <section class="tile color transparent-black">
+
+            <!-- tile header -->
+            <div class="tile-header">
+                <h1><strong></strong></h1>
+                <div class="controls">
+                    <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
+                    <a href="#" class="remove"><i class="fa fa-times"></i></a>
+                </div>
+            </div>
+            <!-- /tile header -->
+
+            <div class="form-horizontal">
+
+                <div class="row">
+                    <form id="searchForm" >
+                        <div class="form-group col-md-4">
+                            <label class="col-sm-4 control-label" for="usernameSearch">用户名称</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="usernameSearch" name="username" placeholder="输入用户名称">
+                            </div>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label for="searchFormUserTypeSelectbox" class="col-sm-4 control-label">用户类型</label>
+                            <div class="col-sm-8" id="searchFormUserTypeSelectboxDiv">
+                                <select class="chosen-select chosen-transparent form-control"id="searchFormUserTypeSelectbox"
+                                        parsley-trigger="change"
+                                        parsley-error-container="#searchFormUserTypeSelectboxDiv">
+                                    <option value="">请选择</option>
+                                    <option value="manager">系统管理员</option>
+                                    <option value="admin">超级管理员</option>
+                                </select>
+                            </div>
+                        </div>
+                        <!--<div class="form-group col-md-4">
+                            <label for="input07" class="col-sm-4 control-label">Normal select box *</label>
+                            <div class="col-sm-8" id="selectbox5">
+                                <select class="chosen-select chosen-transparent form-control" id="input09"
+                                        parsley-trigger="change" parsley-required="true" parsley-error-container="#selectbox">
+                                    <option value="">Please choose</option>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                        </div>-->
+                        <div class="form-group col-md-4">
+                            <label class="col-sm-4 control-label">
+                            </label>
+                            <div class="col-sm-8">
+                                <button type="button" id="searchBtn" class="btn btn-primary">查询</button>
+                                <button type="button" id="resetBtn" class="btn btn-danger margin-left-15">重置</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+        </section>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+            <section class="tile color transparent-black">
+                <!-- tile header -->
+                <div class="tile-header">
+                    <h1><strong>用户列表</strong></h1>
+                    <div class="controls">
+                        <a href="#" class="refresh"><i class="fa fa-refresh"></i></a>
+                        <a href="#" class="remove"><i class="fa fa-times"></i></a>
+                    </div>
+                </div>
+                <!-- /tile header -->
+
+                <!-- tile body -->
+                <div class="tile-body">
+                    <table id="table" class="table table-bordered table-sortable">
+                    </table>
+                </div>
+
+            </section>
+    </div>
+    <div class="col-md-6">
+        <section class="tile color transparent-black">
+            <!-- tile header -->
+            <div class="tile-header">
+                <h1><strong>用户所拥有菜单</strong></h1>
+                <br>
+                <br>
+                <h1><strong>当前选择用户：</strong><span id="currentUserName"></span></h1>
+            </div>
+            <div class="custom-labels">
+                <div >
+                    <button type="button" id="addBtn" class="btn btn-success">新增</button>
+                    <button type="button" id="deleteBtn" class="btn btn-danger margin-left-15">删除</button>
+                </div>
+            </div>
+            <div class="modal fade" id="modalConfirm" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false"
+                 aria-labelledby="modalConfirmLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width: 25%">
+                    <input type="hidden" id="selectUserId" name="userId" />
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">关闭
+                            </button>
+                            <h3 class="modal-title" id="modalConfirmLabel"><strong>新增用户菜单权限</strong></h3>
+                        </div>
+                        <div class="modal-body">
+                            <div class="tile-body">
+                                <div class="row">
+                                    <div id="allMenuTree" style="height: 500px;overflow-y: scroll"></div>
+                                </div>
+                                <div class="custom-labels">
+                                    <button type="button" id="confirmBtn" class="btn btn-success">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div>
+            <!-- tile body -->
+            <div class="tile-body">
+                <div id="userAuthMenuTree" ></div>
+            </div>
+            <!-- /tile body -->
+
+
+        </section>
+    </div>
+</div>
+<script type="text/javascript">
+    /*查询条件*/
+    var userManage = {
+        getQueryCondition: function (data) {
+            var param = {};// searchFormUserTypeSelectbox
+            param.username = $("#usernameSearch").val();//查询条件
+            param.type = $("#menuUrlSearch").val();//查询条件
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            return param;
+        }
+    };
+    /*权限弹出框已经选择即将授予的节点*/
+    var menuAuthSelectedTree=new Array();
+    $(function () {
+        /*chosen.jquery.min.js配置*/
+        $(".chosen-select").chosen({
+            disable_search_threshold: 10,
+            disable_search: false,
+            allow_single_deselect: true,
+            max_selected_options: 1
+        });
+
+        /*添加按钮点击事件*/
+        $("#addBtn").click(function () {
+            if($("#selectUserId").val()==null||$("#selectUserId").val()=="") {
+                PXF.errorDialog("请选择用户")
+                return;
+            }
+            loadAllMenuTree();
+            $("#modalConfirm").modal();
+        });
+
+        /*授权弹出框确认按钮*/
+        $("#confirmBtn").click(function (data) {
+            menuAuthSelectedTree.length=0;
+            var datas=$('#allMenuTree').treeview('getSelected');
+            var tosaveData=[];
+            for(var i=0;i<datas.length;i++){
+                getParentNodes(datas[i]);
+            }
+            PXF.ajax(saveUserMenuAuth,JSON.stringify(menuAuthSelectedTree),function (data) {
+                $("#modalConfirm").modal("hide");
+                loadTree({id:$("#selectUserId").val()},function (treeObj) {});
+            },function (data) {})
+        });
+
+        /*删除按钮*/
+        $("#deleteBtn").click(function () {
+            if($("#selectUserId").val()==null||$("#selectUserId").val()=="") {
+                PXF.errorDialog("请选择用户")
+                return;
+            }
+            PXF.confirmDialog("确认删除？",function () {
+                var datas=$('#userAuthMenuTree').treeview('getSelected');
+                var ids="";
+                for(var i=0;i<datas.length;i++){
+                    ids+=datas[i].id+","
+                }
+                PXF.ajax(deleteUserMenuAuthByIds,{userId:$("#selectUserId").val(),ids:ids},function (data) {
+                    loadTree({id:$("#selectUserId").val()},function (treeObj) {});
+                })
+            })
+        });
+
+        /*获取所有父节点*/
+        function getParentNodes(node) {
+            var saveDataObj={};
+            //组装待保存数据
+            saveDataObj.userId=$("#selectUserId").val();
+            saveDataObj.menuId=node.id;
+            saveDataObj.menuPid=node.menuPid;
+            saveDataObj.menuName=node.menuName;
+            saveDataObj.menuUrl=node.menuUrl;
+            menuAuthSelectedTree[node.nodeId]=saveDataObj;
+            var parentNode=$('#allMenuTree').treeview('getParent', node);
+            if(parentNode.nodeId!=null||parentNode.nodeId!=undefined){
+                parentNode.nodes.length=0;
+                getParentNodes(parentNode);
+            }
+        }
+
+        var $table = $("#table").dataTable($.extend(true, {}, CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
+            ajax: function (data, callback, settings) {
+                //封装请求参数
+                var param = userManage.getQueryCondition(data);
+                $.ajax({
+                    type: getUsersPageUrl.type,
+                    url: getUsersPageUrl.url,
+                    cache: false,  //禁用缓存
+                    data: param,    //传入已封装的参数
+                    dataType: "json",
+                    success: function (result) {
+                        //异常判断与处理
+                        if (!result.success) {
+                            PXF.errorDialog(result.message);
+                            return;
+                        }
+                        //封装返回数据
+                        var returnData = {};
+                        returnData.draw = data.draw;//这里直接自行返回了draw计数器,应该由后台返回
+                        returnData.recordsTotal = result.data.totalElements;//总记录数
+                        returnData.recordsFiltered = result.data.totalElements;//后台不实现过滤功能，每次查询均视作全部结果
+                        returnData.data = result.data.content;
+                        //调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
+                        //此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
+                        callback(returnData);
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        PXF.errorDialog("查询失败");
+                    }
+                });
+            },
+            order: [[ 2, "desc" ]],
+            //绑定数据
+            columns: [
+                {
+                    targets:0,
+                    title: "用户名称",
+                    data: "username"
+                },
+                {
+                    targets:1,
+                    title: "用户类型",
+                    data: "type",//字段名
+                    render:function(data,type, row, meta) {
+                        var returnData="";
+                        if(data=="user"){
+                            returnData="一般用户";
+                        }else if(data=="manager"){
+                            returnData="系统管理员";
+                        }else if(data=="admin"){
+                            returnData="超级管理员";
+                        }
+                        return returnData;
+                    }
+                },
+                {
+                    targets:2,
+                    title: "添加时间",
+                    data: "rawAddTime",
+                    orderable: true//排序
+                }
+            ],
+            createdRow: function ( row, data, index ) {
+                $('td', row).each(function (e) {
+                    $(this).attr("class","text-center");
+                });
+                // $('td', row).eq(3).attr("class","actions text-center");
+            },
+            drawCallback: function (settings) {
+                //渲染完毕后的回调
+                //默认选中第一行
+                // $("tbody tr",$table).eq(0).click();
+            }
+        })).api();//此处需调用api()方法,否则返回的是JQuery对象而不是DataTables的API对象
+
+        $(document).on("mouseover","#table tbody tr",function (e) {
+            $(this).css("cursor","pointer");
+        });
+        $(document).on("click","#table tbody tr",function (e) {
+            //点击背景蓝色
+            $("#table tr").removeClass("btn-primary");
+            $(this).addClass("btn-primary");
+            //获得行数据
+            var data=$table.row( this ).data();
+            //当前选择用户
+            $("#currentUserName").text(data.username);
+            $("#selectUserId").val(data.id);
+            //已经拥有的菜单权限
+            loadTree({id:data.id},function (treeObj) {});
+        });
+
+        //查询
+        $("#btn_search").click(function () {
+            $table.ajax.reload();
+        });
+
+
+        //加载树
+        function loadTree(params,initialize) {
+            /*第一个参数为pingxun-renren.js里面的url,第二个参数为需要加载树形结构的目标标签，第三个参数为bootstrap-treeview.js的配置参数*/
+            PXF.tree(getMenuWithUserId,$('#userAuthMenuTree'),{
+                multiSelect:true,
+                backColor:'#00000000',
+                showBorder:false,//1C1C1C
+                onhoverColor:'#1C1C1C',
+                selectedBackColor:'#1C1C1C',
+                color:'white',
+                expandIcon:'glyphicon glyphicon-list',
+                collapseIcon:'glyphicon glyphicon-circle-arrow-up',
+                selectedColor:'#3D7DB3',
+                onNodeSelected:function(event, data) {
+                }
+            },initialize,params);
+        }
+        //加载树
+        function loadAllMenuTree(params,initialize) {
+            /*第一个参数为pingxun-renren.js里面的url,第二个参数为需要加载树形结构的目标标签，第三个参数为bootstrap-treeview.js的配置参数*/
+            PXF.tree(getAllMenu,$('#allMenuTree'),{
+                multiSelect:true,
+                onNodeSelected:function(event, data) {
+
+                }
+            },initialize,params);
+        }
+        //searchBtn resetBtn
+        $("#searchBtn").click(function () {
+            $table.ajax.reload();
+        });
+
+        $("#emptyBtn").click(function () {
+            $('#allMenu').treeview('uncheckAll', { silent: true });
+            $("#menuName").val("");
+            $("#menuUrl").val("");
+            $("#menuPid").val("");
+        });
+        $("#submitBtn").click(function () {
+            var isValidate=$("#basicvalidations").parsley().validate();
+            if(isValidate){
+                PXF.ajax(editSysMenuList,$("#basicvalidations"),function (data) {
+                    $table.ajax.reload();//表格重载
+                    $("#modalConfirm").modal('hide');
+                    $("#menuName").val("");
+                    $("#menuUrl").val("");
+                    $("#menuPid").val("");
+                },function () {})
+            }
+        });
+    });
+</script>
+
+      
