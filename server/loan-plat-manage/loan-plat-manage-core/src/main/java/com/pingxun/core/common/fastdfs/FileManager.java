@@ -6,7 +6,6 @@ package com.pingxun.core.common.fastdfs;
 import java.io.File;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.csource.common.NameValuePair;
 import org.csource.fastdfs.ClientGlobal;
 import org.csource.fastdfs.FileInfo;
@@ -15,13 +14,15 @@ import org.csource.fastdfs.StorageClient;
 import org.csource.fastdfs.StorageServer;
 import org.csource.fastdfs.TrackerClient;
 import org.csource.fastdfs.TrackerServer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class FileManager implements FileManagerConfig {
 
     private static final long serialVersionUID = 1L;
 
-    private static Logger logger  = Logger.getLogger(FileManager.class);
+    private static Logger logger  = LoggerFactory.getLogger(FileManager.class);
 
     private static TrackerClient  trackerClient;
     private static TrackerServer  trackerServer;
@@ -43,7 +44,7 @@ public class FileManager implements FileManagerConfig {
             storageClient = new StorageClient(trackerServer, storageServer);
 
         } catch (Exception e) {
-            logger.error(e);
+            logger.error("",e);
 
         }
     }

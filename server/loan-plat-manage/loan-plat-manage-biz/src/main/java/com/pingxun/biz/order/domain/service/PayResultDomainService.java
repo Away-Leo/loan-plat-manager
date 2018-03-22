@@ -31,14 +31,14 @@ public class PayResultDomainService {
     }
 
     public PayResult updateData(PayResultDto payResultDto){
-        PayResult payResult=payResultRepository.findOne(payResultDto.getId());
+        PayResult payResult=payResultRepository.getOne(payResultDto.getId());
         payResult.from(payResultDto);
         return payResult;
     }
 
     public PayResult saveOrUpdate(PayResultDto payResultDto){
         if(ObjectHelper.isNotEmpty(payResultDto.getId())){
-            PayResult payResult=payResultRepository.findOne(payResultDto.getId());
+            PayResult payResult=payResultRepository.getOne(payResultDto.getId());
             payResult.from(payResultDto);
             return payResult;
         }else{

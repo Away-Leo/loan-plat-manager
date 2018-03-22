@@ -33,7 +33,7 @@ public class SendSmsLogDomainService {
      * @return
      */
     public SendSmsLog update(SendSmsLogDto sendSmsLogDto){
-        SendSmsLog log = repository.findOne(sendSmsLogDto.getId());
+        SendSmsLog log = repository.getOne(sendSmsLogDto.getId());
         if(log!=null)
         {
             log.from(sendSmsLogDto);

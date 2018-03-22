@@ -47,7 +47,7 @@ public class MessageDomainService {
      */
     public Message readMessage(MessageDto messageDto)
     {
-        Message message = repository.findOne(messageDto.getId());
+        Message message = repository.getOne(messageDto.getId());
         if(message == null)
         {
             CwException.throwIt("消息不存在");
@@ -83,7 +83,7 @@ public class MessageDomainService {
         MessageDto messageDto = new MessageDto();
         messageDto.setId(id);
         readMessage(messageDto);
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     /**

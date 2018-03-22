@@ -48,7 +48,7 @@ public class OrderPayDomainService {
      * @return
      */
     public OrderPay update(OrderPayDto orderPayDto){
-        OrderPay orderPay = repository.findOne(orderPayDto.getId());
+        OrderPay orderPay = repository.getOne(orderPayDto.getId());
         if(orderPay == null){
             CwException.throwIt("订单支付记录不存在");
         }
@@ -62,7 +62,7 @@ public class OrderPayDomainService {
      * @return
      */
     public OrderPay findById(Long id){
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     /**

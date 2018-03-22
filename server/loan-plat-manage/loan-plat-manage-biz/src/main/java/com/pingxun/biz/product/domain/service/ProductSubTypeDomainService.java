@@ -37,7 +37,7 @@ public class ProductSubTypeDomainService {
      */
     public ProductSubType update(ProductSubTypeDto productSubTypeDto)
     {
-        ProductSubType product = repository.findOne(productSubTypeDto.getId());
+        ProductSubType product = repository.getOne(productSubTypeDto.getId());
         if(product == null)
         {
             CwException.throwIt("产品不存在");
@@ -54,7 +54,7 @@ public class ProductSubTypeDomainService {
      */
     public ProductSubType findById(Long id)
     {
-        ProductSubType product = repository.findOne(id);
+        ProductSubType product = repository.getOne(id);
         return product;
     }
 

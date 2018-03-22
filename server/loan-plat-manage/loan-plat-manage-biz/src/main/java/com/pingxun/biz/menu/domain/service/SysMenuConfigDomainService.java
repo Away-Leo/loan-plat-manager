@@ -41,7 +41,7 @@ public class SysMenuConfigDomainService {
      */
     public SysMenuConfigDto findById(Long id) throws Exception {
         if (ObjectHelper.isNotEmpty(id)) {
-            SysMenuConfig sourceData = this.sysMenuConfigRepository.findOne(id);
+            SysMenuConfig sourceData = this.sysMenuConfigRepository.getOne(id);
             if (ObjectHelper.isNotEmpty(sourceData)) {
                 return sourceData.to(SysMenuConfigDto.class);
             } else {
@@ -185,7 +185,7 @@ public class SysMenuConfigDomainService {
      */
     public void deleteSysMenuConf(Long id) throws Exception {
         if (ObjectHelper.isNotEmpty(id)) {
-            SysMenuConfig sourceData = this.sysMenuConfigRepository.findOne(id);
+            SysMenuConfig sourceData = this.sysMenuConfigRepository.getOne(id);
             if (ObjectHelper.isNotEmpty(sourceData)) {
                 this.sysMenuConfigRepository.delete(sourceData);
             } else {

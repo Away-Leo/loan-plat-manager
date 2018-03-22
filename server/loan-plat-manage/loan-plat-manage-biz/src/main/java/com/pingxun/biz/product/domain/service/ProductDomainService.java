@@ -81,7 +81,7 @@ public class ProductDomainService {
      * @return
      */
     public Product update(ProductDto productDto){
-        Product product = repository.findOne(productDto.getId());
+        Product product = repository.getOne(productDto.getId());
         if(product == null){
             CwException.throwIt("产品不存在");
         }
@@ -107,7 +107,7 @@ public class ProductDomainService {
             productVersion1.setDataVersion(1);
             productVersionRepository.save(productVersion1);
         }else {
-            ProductVersion productVersion = productVersionRepository.findOne(productVersionList.get(0).getId());
+            ProductVersion productVersion = productVersionRepository.getOne(productVersionList.get(0).getId());
             productVersion.setDataVersion(productVersion.getDataVersion() + 1);
         }
     }
@@ -117,7 +117,7 @@ public class ProductDomainService {
      * @return
      */
     public Product enable(ProductVersionDto productDto){
-        Product product = repository.findOne(productDto.getId());
+        Product product = repository.getOne(productDto.getId());
         if(product == null){
             CwException.throwIt("产品不存在");
         }
@@ -139,7 +139,7 @@ public class ProductDomainService {
      * @return
      */
     public Product findById(Long id){
-        Product product = repository.findOne(id);
+        Product product = repository.getOne(id);
         if(product==null) {
             CwException.throwIt("id不能为空");
         }
@@ -428,7 +428,7 @@ public class ProductDomainService {
      * @param logDto
      */
     private void sendRegisterMessage(LogDto logDto){
-        Product product= repository.findOne(logDto.getProductId());
+        Product product= repository.getOne(logDto.getProductId());
         if(product!=null) {
             MessageDto messageDto = new MessageDto();
             messageDto.setUserId(CPContext.getContext().getSeUserInfo().getId());

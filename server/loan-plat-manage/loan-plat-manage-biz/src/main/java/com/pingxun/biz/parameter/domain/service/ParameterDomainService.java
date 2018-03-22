@@ -57,7 +57,7 @@ public class ParameterDomainService {
      * @return
      */
     public Parameter findById(Long id) {
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     /**

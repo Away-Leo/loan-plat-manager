@@ -46,7 +46,7 @@ public class EmployeeLevelDomainService {
      */
     public EmployeeLevel update(EmployeeLevelDto employeeLevelDto)
     {
-        EmployeeLevel employeeLevel = repository.findOne(employeeLevelDto.getId());
+        EmployeeLevel employeeLevel = repository.getOne(employeeLevelDto.getId());
         if(employeeLevel == null){
             CwException.throwIt("banner不存在");
         }
@@ -64,7 +64,7 @@ public class EmployeeLevelDomainService {
      */
     public EmployeeLevel findById(Long id)
     {
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     /**

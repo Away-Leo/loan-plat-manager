@@ -38,6 +38,9 @@ public class User extends AggEntity {
     @Column(name="role_ids",columnDefinition="varchar(100) comment '角色ID'")
     private String roleIds;
 
+    @Column(name="verify_code",columnDefinition="varchar(100) comment '验证码'")
+    private String verifyCode;
+
     @Column(name="locked",columnDefinition="tinyint(1)  comment '是否锁定'")
     private Boolean locked=false;
 
@@ -55,5 +58,8 @@ public class User extends AggEntity {
 
     @Column(name="register_date",columnDefinition="datetime  comment '注册时间'")
     private Date registerDate;
+
+    @Column(name="verify_exp_date",columnDefinition="datetime  comment ''")
+    private Date verifyExpDate;
 
 }

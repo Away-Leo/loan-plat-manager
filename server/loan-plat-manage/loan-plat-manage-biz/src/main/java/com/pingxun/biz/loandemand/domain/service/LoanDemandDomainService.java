@@ -50,7 +50,7 @@ public class LoanDemandDomainService {
      * @return
      */
     public LoanDemand update(LoanDemandDto loanDemandDto){
-        LoanDemand loanDemand = repository.findOne(loanDemandDto.getId());
+        LoanDemand loanDemand = repository.getOne(loanDemandDto.getId());
         if(loanDemand == null){
             CwException.throwIt("需求不存在");
         }
@@ -64,7 +64,7 @@ public class LoanDemandDomainService {
      * @return
      */
     public LoanDemand disable(LoanDemandDto loanDemandDto){
-        LoanDemand loanDemand = repository.findOne(loanDemandDto.getId());
+        LoanDemand loanDemand = repository.getOne(loanDemandDto.getId());
         if(loanDemand == null){
             CwException.throwIt("需求不存在");
         }
@@ -78,7 +78,7 @@ public class LoanDemandDomainService {
      * @return
      */
     public LoanDemand findById(Long id){
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     /**

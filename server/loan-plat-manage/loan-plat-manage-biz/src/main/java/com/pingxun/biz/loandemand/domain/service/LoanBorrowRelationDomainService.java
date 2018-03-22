@@ -81,7 +81,7 @@ public class LoanBorrowRelationDomainService {
      * @return
      */
     public LoanBorrowRelation findById(Long id){
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     /**

@@ -54,7 +54,7 @@ public class BannerDomainService {
      */
     public Banner update(BannerDto bannerDto)
     {
-        Banner banner = repository.findOne(bannerDto.getId());
+        Banner banner = repository.getOne(bannerDto.getId());
         if(banner == null){
             CwException.throwIt("banner不存在");
         }
@@ -72,7 +72,7 @@ public class BannerDomainService {
      */
     public Banner enable(BannerDto bannerDto)
     {
-        Banner banner = repository.findOne(bannerDto.getId());
+        Banner banner = repository.getOne(bannerDto.getId());
         if(banner == null)
         {
             CwException.throwIt("银行不存在");
@@ -92,7 +92,7 @@ public class BannerDomainService {
      */
     public Banner findById(Long id)
     {
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     /**

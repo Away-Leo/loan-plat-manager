@@ -51,7 +51,7 @@ public class OrderDomainService {
      * @return
      */
     public Order update(OrderDto orderDto){
-        Order order = repository.findOne(orderDto.getId());
+        Order order = repository.getOne(orderDto.getId());
         if(order == null){
             CwException.throwIt("订单不存在");
         }
@@ -65,7 +65,7 @@ public class OrderDomainService {
      * @return
      */
     public Order findById(Long id) throws BusinessException{
-        Order returnData=repository.findOne(id);
+        Order returnData=repository.getOne(id);
         if(ObjectHelper.isNotEmpty(returnData)){
             return returnData;
         }else{

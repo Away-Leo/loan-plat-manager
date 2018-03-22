@@ -955,9 +955,11 @@
 
 <script>
     function logOut() {
-        PXF.ajax(LoginOutUrl,null,function (data) {
-            location.href="login.html";
-        })
+        PXF.confirmDialog("确定退出？",function () {
+            PXF.ajax(LoginOutUrl,null,function (data) {
+                location.href="login.html";
+            })
+        });
     }
     $(document).ready(function () {
         //退出登录

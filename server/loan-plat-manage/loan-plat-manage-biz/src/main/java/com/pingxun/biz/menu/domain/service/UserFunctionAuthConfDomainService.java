@@ -129,7 +129,7 @@ public class UserFunctionAuthConfDomainService {
         if(ObjectHelper.isNotEmpty(ids)){
             String[] idArray=ids.split(",");
             for(String temp:idArray){
-                this.userFunctionAuthConfRepository.delete(Long.valueOf(temp));
+                this.userFunctionAuthConfRepository.deleteById(Long.valueOf(temp));
             }
         }
     }

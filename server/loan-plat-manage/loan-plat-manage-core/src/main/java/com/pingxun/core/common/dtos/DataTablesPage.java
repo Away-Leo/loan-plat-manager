@@ -11,8 +11,6 @@ import lombok.Setter;
 * @copyright 重庆平讯数据
 * @version V1.0
 */
-@Getter
-@Setter
 public class DataTablesPage {
 
     public int draw;
@@ -26,6 +24,54 @@ public class DataTablesPage {
     public String orderDir;
 
     public int pageNm;
+
+    public int getDraw() {
+        return draw;
+    }
+
+    public void setDraw(int draw) {
+        this.draw = draw;
+    }
+
+    public int getStartIndex() {
+        return startIndex;
+    }
+
+    public void setStartIndex(int startIndex) {
+        this.startIndex = startIndex;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public String getOrderColumn() {
+        return orderColumn;
+    }
+
+    public void setOrderColumn(String orderColumn) {
+        this.orderColumn = orderColumn;
+    }
+
+    public String getOrderDir() {
+        return orderDir;
+    }
+
+    public void setOrderDir(String orderDir) {
+        this.orderDir = orderDir;
+    }
+
+    public int getPageNm() {
+        return pageNm;
+    }
+
+    public void setPageNm(int pageNm) {
+        this.pageNm = pageNm;
+    }
 
     public int countPageNm(){
         return this.getStartIndex()/this.getPageSize();

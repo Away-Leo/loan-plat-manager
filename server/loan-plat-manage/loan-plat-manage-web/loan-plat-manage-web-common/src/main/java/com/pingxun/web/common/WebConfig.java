@@ -1,8 +1,8 @@
 package com.pingxun.web.common;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
-import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
+//import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+//import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -55,14 +55,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         return characterEncodingFilter;
     }
 
-    @Bean
-    public EmbeddedServletContainerCustomizer embeddedServletContainerCustomizer() {
-        return new EmbeddedServletContainerCustomizer() {
-            @Override
-            public void customize(ConfigurableEmbeddedServletContainer container) {
-                container.setSessionTimeout(60, TimeUnit.MINUTES);
-            }
-        };
-    }
+//    @Bean
+//    public EmbeddedServletContainerCustomizer embeddedServletContainerCustomizer() {
+//        return new EmbeddedServletContainerCustomizer() {
+//            @Override
+//            public void customize(ConfigurableEmbeddedServletContainer container) {
+//                container.setSessionTimeout(60, TimeUnit.MINUTES);
+//            }
+//        };
+//    }
 
 }

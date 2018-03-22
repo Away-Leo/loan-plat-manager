@@ -166,12 +166,12 @@ public class UserMenuAuthConfDomainService {
         if(ObjectHelper.isNotEmpty(ids)){
             String[] idArray=ids.split(",");
             for(String temp:idArray){
-                UserMenuAuthConf lineData=this.userMenuAuthConfRepository.findOne(Long.valueOf(temp));
+                UserMenuAuthConf lineData=this.userMenuAuthConfRepository.getOne(Long.valueOf(temp));
                 if(ObjectHelper.isNotEmpty(lineData)){
                     List<UserMenuAuthConfDto> childData=this.findByUserIdAndParentMenuId(userId,lineData.getMenuId());
                     if(ObjectHelper.isNotEmpty(childData)&&childData.size()>0){
                         for(UserMenuAuthConfDto tempData:childData){
-                            this.userMenuAuthConfRepository.delete(tempData.getId());
+                            this.userMenuAuthConfRepository.deleteById(tempData.getId());
                         }
                     }
                     this.userMenuAuthConfRepository.delete(lineData);

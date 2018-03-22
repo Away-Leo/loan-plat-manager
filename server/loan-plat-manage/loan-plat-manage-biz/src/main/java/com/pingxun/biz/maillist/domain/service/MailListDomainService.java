@@ -134,7 +134,7 @@ public class MailListDomainService {
      * @return
      */
     public MailList update(MailListDto mailListDto){
-        MailList mailList = repository.findOne(mailListDto.getId());
+        MailList mailList = repository.getOne(mailListDto.getId());
         if(mailList == null){
             CwException.throwIt("好友关系不存在");
         }
@@ -203,7 +203,7 @@ public class MailListDomainService {
      * @return
      */
     public MailList findById(Long id){
-        return repository.findOne(id);
+        return repository.getOne(id);
     }
 
     /**
